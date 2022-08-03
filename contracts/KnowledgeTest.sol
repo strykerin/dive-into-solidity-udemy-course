@@ -23,18 +23,17 @@ contract KnowledgeTest {
         return address(this).balance;
     }
 
-    function transferAll(address payable destination) public {
+    function transferAll(address destination) public {
         require(msg.sender == owner, "ONLY_OWNER");
-        uint256 balance = this.getBalance();
-        destination.transfer(balance);
+        (bool result, ) = destination.call{value: getBalance()}("");
     }
 
     function start() public {
         players.push(msg.sender);
     }
 
-    function concatenate(string memory s1, string memory s2)
-        public
+    function concatenate(string calldata s1, string calldata s2)
+        external
         pure
         returns (string memory)
     {
